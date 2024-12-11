@@ -1,0 +1,90 @@
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for Payment System
+  title: Payment System API
+  version: "1.0"
+paths:
+  /balance:
+    get:
+      consumes:
+      - application/json
+      description: Page where you can get the balance for a client
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Get Balance
+      tags:
+      - Logic
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Page where you can log into the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: bearer_token
+          schema:
+            type: string
+      summary: Login Page
+      tags:
+      - Authentication/Authorization
+  /metrics:
+    get:
+      consumes:
+      - application/json
+      description: Page for fetching custom metrics about the server's operation
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Metrics Page
+      tags:
+      - Metrics
+  /registration:
+    post:
+      consumes:
+      - application/json
+      description: Page where you can register in the server's database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Registration Page
+      tags:
+      - Authentication/Authorization
+  /transactions:
+    get:
+      consumes:
+      - application/json
+      description: Page where you can get a list of transactions for the user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: List of Transactions
+      tags:
+      - Logic
+    post:
+      consumes:
+      - application/json
+      description: Page where you can add a new transaction to the list
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Add Transaction
+      tags:
+      - Logic
+schemes:
+- http
+- https
+swagger: "2.0"
