@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"PaymentSystem/iternal/balance_db"
-	"PaymentSystem/iternal/brokers/kafka"
 	"PaymentSystem/iternal/jwt_auth/jwt"
+	"PaymentSystem/iternal/kafka"
 	"PaymentSystem/iternal/metrics"
 	"PaymentSystem/iternal/users_db"
 	"fmt"
@@ -11,6 +11,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -67,9 +68,17 @@ func GetBalance(db *gorm.DB) http.HandlerFunc {
 				"error": err,
 			}).Debugln("Failed to get balance struct from db")
 		}
-		producer := kafka.CreateProducer()
+		producer, err := kafka.CreateProducer()
+		if err != nil {
+			w.WriteHeader(http.StatusBadGateway)
+			logrus.WithFields(logrus.Fields{
+				"error": err,
+			}).Warn("Failed to create kafka producer")
+			return
+		}
 		defer producer.Close()
-		topic := "balance"
+		ids := strconv.Itoa(id)
+		topic := "analytics" + ids
 		msg := kafka.KafkaMessage{
 			Id:      bls.Id,
 			Balance: bls.Balance,

@@ -20,7 +20,7 @@ type Transactions struct {
 	Money  float32   `gorm:"type:decimal(10,2)"`
 }
 
-type Budget struct {
+type Balance struct {
 	Id      int       `gorm:"primaryKey"`
 	UserId  int       `gorm:"foreignKey:UserId;references:Id"`
 	Balance float32   `gorm:"type:decimal(10,2)"`
@@ -38,7 +38,7 @@ func NewDB() (*gorm.DB, error) {
 	if err := db.AutoMigrate(&Transactions{}); err != nil {
 		return nil, err
 	}
-	if err := db.AutoMigrate(&Budget{}); err != nil {
+	if err := db.AutoMigrate(&Balance{}); err != nil {
 		return nil, err
 	}
 	return db, nil

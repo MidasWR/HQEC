@@ -32,6 +32,7 @@ func (s *Server) Run() error {
 	TransactionsHandlePost(s)
 	BalanceHandle(s)
 	MetricsHandle(s)
+	AnalyticsForGrafana(s)
 	s.Rt.Handle("/swagger/", httpSwagger.WrapHandler)
 	return http.ListenAndServe(s.Config.Host+":"+s.Config.Port, s.Rt)
 }
@@ -100,4 +101,7 @@ func BalanceHandle(s *Server) {
 // @Router /metrics [get]
 func MetricsHandle(s *Server) {
 	s.Rt.Handle("/metrics", promhttp.Handler())
+}
+func AnalyticsForGrafana(s *Server) {
+	s.Rt.HandleFunc("/analytics", handlers2.AnalyticsJSONPage(s.Db)).Methods("GET")
 }
